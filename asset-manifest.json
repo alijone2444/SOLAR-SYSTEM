@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/SOLAR-STSTEM/static/css/main.2e088828.css",
+    "main.js": "/SOLAR-STSTEM/static/js/main.9c14f480.js",
+    "static/js/787.2cfab07e.chunk.js": "/SOLAR-STSTEM/static/js/787.2cfab07e.chunk.js",
+    "static/media/Sun_Texture.jpg": "/SOLAR-STSTEM/static/media/Sun_Texture.d0731823a031fc628aa4.jpg",
+    "static/media/Earth_Texture_Full.jpg": "/SOLAR-STSTEM/static/media/Earth_Texture_Full.5d6e9baa4e67261d3d66.jpg",
+    "static/media/Venus_Texture.jpg": "/SOLAR-STSTEM/static/media/Venus_Texture.c3f5c1597fd448223dae.jpg",
+    "static/media/Mercury_Texture.jpg": "/SOLAR-STSTEM/static/media/Mercury_Texture.21978952b2cedcfafa71.jpg",
+    "index.html": "/SOLAR-STSTEM/index.html",
+    "main.2e088828.css.map": "/SOLAR-STSTEM/static/css/main.2e088828.css.map",
+    "main.9c14f480.js.map": "/SOLAR-STSTEM/static/js/main.9c14f480.js.map",
+    "787.2cfab07e.chunk.js.map": "/SOLAR-STSTEM/static/js/787.2cfab07e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2e088828.css",
+    "static/js/main.9c14f480.js"
+  ]
+}
