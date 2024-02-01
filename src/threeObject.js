@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import image1 from '../src/Earth_Texture_Full.jpg';
 import image2 from '../src/Sun_Texture.jpg';
 import image3 from '../src/Venus_Texture.jpg';
@@ -31,21 +32,18 @@ function ThreeScene() {
     const geometry4 = new THREE.SphereGeometry(0.3, 64, 64);
     const material4 = new THREE.MeshStandardMaterial({ color: "#D3D3D3", map: new THREE.TextureLoader().load(image4) });
     const Mercury = new THREE.Mesh(geometry4, material4);
-    // Mercury.position.set(0, 0, -3); // Set different position
     scene.add(Mercury);
 
     // Create second sphere with different position
     const geometry3 = new THREE.SphereGeometry(0.5, 64, 64);
     const material3 = new THREE.MeshStandardMaterial({ color: "#F5F5F5", map: new THREE.TextureLoader().load(image3) });
     const venus = new THREE.Mesh(geometry3, material3);
-    // venus.position.set(-3, 0, -6); // Set different position
     scene.add(venus);
 
     // Create second sphere with different position
     const geometry2 = new THREE.SphereGeometry(1, 64, 64);
     const material2 = new THREE.MeshStandardMaterial({ color: "#00aaff", map: new THREE.TextureLoader().load(image1) });
     const earth = new THREE.Mesh(geometry2, material2);
-    // earth.position.set(-6, 0, -10); // Set different position
     scene.add(earth);
 
     // Create lights for earth
@@ -88,7 +86,10 @@ function ThreeScene() {
     // Create camera
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 15;
-    scene.add(camera);
+
+    // Create PointerLockControls
+    const controls = new PointerLockControls(camera, document.body);
+    scene.add(controls.getObject());
 
     // Create renderer and attach to container element
     const renderer = new THREE.WebGLRenderer();
@@ -114,7 +115,6 @@ function ThreeScene() {
 
     let colorIndex = 0;
     let frameCount = 0;
-    // ...
 
     const blink = () => {
       for (let i = 0; i < particles_materials.length; i++) {
@@ -126,9 +126,16 @@ function ThreeScene() {
       frameCount++;
     };
 
-    // ...
+    const handleMouseMove = (event) => {
+      const movementX = event.movementX || event.mozMovementX || 0;
+      const movementY = event.movementY || event.mozMovementY || 0;
+    
+      controls.moveRight(-movementX * 0.0007);
+      controls.moveForward(-movementY * 0.0007);
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
 
-    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
 
@@ -141,24 +148,23 @@ function ThreeScene() {
       venus.rotation.y += 0.01;
       Mercury.rotation.x += 0.00001;
       Mercury.rotation.y += 0.01;
-          // Set different orbit speeds for each planet
-          const earthOrbitSpeed = -0.001;
-          const venusOrbitSpeed = -0.0015;  // Faster orbit for Venus
-          const mercuryOrbitSpeed = -0.002; // Faster orbit for Mercury
-          
-          const earthDistance = -10;
-          const venusDistance = -6;
-          const mercuryDistance = -3;
-          
-          earth.position.x = Math.cos(earthOrbitSpeed * frameCount) * earthDistance;
-          earth.position.z = Math.sin(earthOrbitSpeed * frameCount) * earthDistance;
-          
-          venus.position.x = Math.cos(venusOrbitSpeed * frameCount) * venusDistance;
-          venus.position.z = Math.sin(venusOrbitSpeed * frameCount) * venusDistance;
-          
-          Mercury.position.x = Math.cos(mercuryOrbitSpeed * frameCount) * mercuryDistance;
-          Mercury.position.z = Math.sin(mercuryOrbitSpeed * frameCount) * mercuryDistance;
-          
+
+      const earthOrbitSpeed = -0.001;
+      const venusOrbitSpeed = -0.0015;
+      const mercuryOrbitSpeed = -0.002;
+
+      const earthDistance = -10;
+      const venusDistance = -6;
+      const mercuryDistance = -3;
+
+      earth.position.x = Math.cos(earthOrbitSpeed * frameCount) * earthDistance;
+      earth.position.z = Math.sin(earthOrbitSpeed * frameCount) * earthDistance;
+
+      venus.position.x = Math.cos(venusOrbitSpeed * frameCount) * venusDistance;
+      venus.position.z = Math.sin(venusOrbitSpeed * frameCount) * venusDistance;
+
+      Mercury.position.x = Math.cos(mercuryOrbitSpeed * frameCount) * mercuryDistance;
+      Mercury.position.z = Math.sin(mercuryOrbitSpeed * frameCount) * mercuryDistance;
 
       blink();
 
@@ -166,10 +172,8 @@ function ThreeScene() {
       composer.render();
     };
 
-    // Start animation loop
     animate();
 
-    // Handle window resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -178,9 +182,9 @@ function ThreeScene() {
 
     window.addEventListener("resize", handleResize);
 
-    // Clean up event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
