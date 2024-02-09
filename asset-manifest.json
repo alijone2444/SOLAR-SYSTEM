@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/SOLAR-STSTEM/static/css/main.d9d1787a.css",
-    "main.js": "/SOLAR-STSTEM/static/js/main.10764c6b.js",
+    "main.css": "/SOLAR-STSTEM/static/css/main.73583b8e.css",
+    "main.js": "/SOLAR-STSTEM/static/js/main.d32cbfe5.js",
     "static/js/787.2cfab07e.chunk.js": "/SOLAR-STSTEM/static/js/787.2cfab07e.chunk.js",
+    "static/media/background_Music.mp3": "/SOLAR-STSTEM/static/media/background_Music.b0f49d32d766a656291c.mp3",
     "static/media/Sun_Texture.jpg": "/SOLAR-STSTEM/static/media/Sun_Texture.d0731823a031fc628aa4.jpg",
     "static/media/Earth_Texture_Full.jpg": "/SOLAR-STSTEM/static/media/Earth_Texture_Full.5d6e9baa4e67261d3d66.jpg",
     "static/media/Mars_Texture.jpg": "/SOLAR-STSTEM/static/media/Mars_Texture.59a9c48d3974aaead559.jpg",
@@ -13,12 +14,12 @@
     "static/media/Neptune_Texture.jpg": "/SOLAR-STSTEM/static/media/Neptune_Texture.a6ca712896aa7090a115.jpg",
     "static/media/Uranus_Texture.jpg": "/SOLAR-STSTEM/static/media/Uranus_Texture.80fba036602f16754c04.jpg",
     "index.html": "/SOLAR-STSTEM/index.html",
-    "main.d9d1787a.css.map": "/SOLAR-STSTEM/static/css/main.d9d1787a.css.map",
-    "main.10764c6b.js.map": "/SOLAR-STSTEM/static/js/main.10764c6b.js.map",
+    "main.73583b8e.css.map": "/SOLAR-STSTEM/static/css/main.73583b8e.css.map",
+    "main.d32cbfe5.js.map": "/SOLAR-STSTEM/static/js/main.d32cbfe5.js.map",
     "787.2cfab07e.chunk.js.map": "/SOLAR-STSTEM/static/js/787.2cfab07e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d9d1787a.css",
-    "static/js/main.10764c6b.js"
+    "static/css/main.73583b8e.css",
+    "static/js/main.d32cbfe5.js"
   ]
 }
