@@ -4,15 +4,18 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
-import image1 from '../src/Earth_Texture_Full.jpg';
-import image2 from '../src/Sun_Texture.jpg';
-import image3 from '../src/Venus_Texture.jpg';
-import image4 from '../src/Mercury_Texture.jpg';
-import circleTexture from '../src/disc.png'; // Replace with your texture path
-
-function ThreeScene() {
+import image1 from './images/Earth_Texture_Full.jpg';
+import image2 from './images/Sun_Texture.jpg';
+import image3 from './images/Venus_Texture.jpg';
+import image4 from './images/Mercury_Texture.jpg';
+import image5 from './images/Saturn_Texture.jpg'
+import image6 from './images/Mars_Texture.jpg'
+import image7 from './images/Jupyter_Texture.jpg'
+import image8 from './images/Uranus_Texture.jpg'
+import image9 from './images/Neptune_Texture.jpg'
+import circleTexture from './images/disc.png'; // Replace with your texture path
+function ThreeScene(props) {
   const refContainer = useRef(null);
-
   useEffect(() => {
     // Create scene
     const scene = new THREE.Scene();
@@ -45,8 +48,59 @@ function ThreeScene() {
     const material2 = new THREE.MeshStandardMaterial({ color: "#00aaff", map: new THREE.TextureLoader().load(image1) });
     const earth = new THREE.Mesh(geometry2, material2);
     scene.add(earth);
+    
+    //mars
+    const geometry7 = new THREE.SphereGeometry(0.7, 64, 64);
+    const material7 = new THREE.MeshStandardMaterial({ color: "#e89d3b", map: new THREE.TextureLoader().load(image6) });
+    const mars = new THREE.Mesh(geometry7, material7);
+    scene.add(mars);
+    
+    // Create second sphere with different position
+    const geometry8 = new THREE.SphereGeometry(1.2, 64, 64);
+    const material8 = new THREE.MeshStandardMaterial({ color: "#ff9966", map: new THREE.TextureLoader().load(image7) });
+    const jupyter = new THREE.Mesh(geometry8, material8);
+    scene.add(jupyter);
 
-    // Create lights for earth
+    
+    // Create second sphere with different position
+    const geometry9 = new THREE.SphereGeometry(0.8, 64, 64);
+    const material9 = new THREE.MeshStandardMaterial({ color: "#00FFFF", map: new THREE.TextureLoader().load(image8) });
+    const uranus = new THREE.Mesh(geometry9, material9);
+    scene.add(uranus);
+
+    
+    // Create second sphere with different position
+    const geometry10 = new THREE.SphereGeometry(0.8, 64, 64);
+    const material10 = new THREE.MeshStandardMaterial({ color: "#0000FF", map: new THREE.TextureLoader().load(image9) });
+    const neptune = new THREE.Mesh(geometry10, material10);
+    scene.add(neptune);
+    
+    // Create sphere for Saturn
+    const geometry5 = new THREE.SphereGeometry(1, 64, 64);
+    const material5 = new THREE.MeshStandardMaterial({ color: "#ffcc00", map: new THREE.TextureLoader().load(image5) });
+    const saturn = new THREE.Mesh(geometry5, material5);
+    const saturnGroup = new THREE.Group();
+    saturnGroup.add(saturn);
+    const ringParticles = new THREE.BufferGeometry();
+    const ringVertices = [];
+    const numParticles = 15000;
+    for (let i = 0; i < numParticles; i++) {
+      const radius = 1.5 + Math.random() * 1.0; // Increase the ring radius range
+      const theta = Math.random() * Math.PI * 2;
+      const x = radius * Math.cos(theta);
+      const y = radius * Math.sin(theta);
+      const z = 0; // Keep particles in the same plane (z = 0 for a disc)
+      ringVertices.push(x, y, z);
+    }
+    ringParticles.setAttribute("position", new THREE.Float32BufferAttribute(ringVertices, 3));
+    const ringMaterial = new THREE.PointsMaterial({ color: '#8b735c', size: 0.05 }); // Adjust the size of particles
+    const ring = new THREE.Points(ringParticles, ringMaterial);
+    ring.rotation.y = (-25 * Math.PI) / 180;
+    ring.rotation.x = (65 * Math.PI) / 180;
+    saturnGroup.add(ring);
+    scene.add(saturnGroup);
+
+    // Create lights for planets
     const light1 = new THREE.PointLight(0xffffff, 1, 1000);
     light1.position.set(0, 0, 0);
     light1.intensity = 60;
@@ -112,9 +166,14 @@ function ThreeScene() {
     orbitGroup.add(Mercury);
     orbitGroup.add(venus);
     orbitGroup.add(earth);
+    orbitGroup.add(mars);
+    orbitGroup.add(jupyter);
+    orbitGroup.add(saturnGroup);
+    orbitGroup.add(uranus);
+    orbitGroup.add(neptune);
 
     let colorIndex = 0;
-    let frameCount = 0;
+    let frameCount = 6500;
 
     const blink = () => {
       for (let i = 0; i < particles_materials.length; i++) {
@@ -129,42 +188,81 @@ function ThreeScene() {
     const handleMouseMove = (event) => {
       const movementX = event.movementX || event.mozMovementX || 0;
       const movementY = event.movementY || event.mozMovementY || 0;
-    
+
       controls.moveRight(-movementX * 0.0007);
       controls.moveForward(-movementY * 0.0007);
     };
-    
+
     document.addEventListener('mousemove', handleMouseMove);
+    const mercuryOrbitSpeed = -0.0009;
+    const venusOrbitSpeed = -0.0008;
+    const earthOrbitSpeed = -0.0007;
+    const marsOrbitSpeed = -0.0006;
+    const jupyterOrbitSpeed = -0.0005;
+    const saturnRingOrbitSpeed = -0.0004;
+    const uranusOrbitSpeed = -0.0003;
+    const neptuneOrbitSpeed = -0.0002;
+    
+    const neptuneDistance = -32;
+    const uranusDistance = -28;
+    const saturnRingDistance = -24;
+    const jupyterDistance = -20;
+    const marsDistance = -16;
+    const earthDistance = -12;
+    const venusDistance = -8;
+    const mercuryDistance = -4;
+
+    let isMounted = true;    
 
     const animate = () => {
       requestAnimationFrame(animate);
-
+      if (!isMounted) {
+        // If component is unmounted, exit the loop
+        return;
+      }
+      console.log(props.propchange)
       // Rotate spheres
-      orbitGroup.rotation.y += 0.004;
-
+      orbitGroup.rotation.y += 0.002;
+      neptune.rotation.x += 0.00001;
+      neptune.rotation.y += 0.01;
+      uranus.rotation.x += 0.00001;
+      uranus.rotation.y += 0.01;
+      jupyter.rotation.x += 0.00001;
+      jupyter.rotation.y += 0.01;
+      mars.rotation.x += 0.00001;
+      mars.rotation.y += 0.01;
       earth.rotation.x += 0.00001;
       earth.rotation.y += 0.01;
       venus.rotation.x += 0.00001;
       venus.rotation.y += 0.01;
       Mercury.rotation.x += 0.00001;
       Mercury.rotation.y += 0.01;
+      saturn.rotation.x += 0.00001;
+      saturn.rotation.y += 0.01;
+      ring.rotation.z += 0.009;
 
-      const earthOrbitSpeed = -0.001;
-      const venusOrbitSpeed = -0.0015;
-      const mercuryOrbitSpeed = -0.002;
 
-      const earthDistance = -10;
-      const venusDistance = -6;
-      const mercuryDistance = -3;
-
-      earth.position.x = Math.cos(earthOrbitSpeed * frameCount) * earthDistance;
-      earth.position.z = Math.sin(earthOrbitSpeed * frameCount) * earthDistance;
-
-      venus.position.x = Math.cos(venusOrbitSpeed * frameCount) * venusDistance;
-      venus.position.z = Math.sin(venusOrbitSpeed * frameCount) * venusDistance;
 
       Mercury.position.x = Math.cos(mercuryOrbitSpeed * frameCount) * mercuryDistance;
       Mercury.position.z = Math.sin(mercuryOrbitSpeed * frameCount) * mercuryDistance;
+      venus.position.x = Math.cos(venusOrbitSpeed * frameCount) * venusDistance;
+      venus.position.z = Math.sin(venusOrbitSpeed * frameCount) * venusDistance;
+      earth.position.x = Math.cos(earthOrbitSpeed * frameCount) * earthDistance;
+      earth.position.z = Math.sin(earthOrbitSpeed * frameCount) * earthDistance;
+      mars.position.x = Math.cos(marsOrbitSpeed * frameCount) * marsDistance;
+      mars.position.z = Math.sin(marsOrbitSpeed * frameCount) * marsDistance;
+      
+      jupyter.position.x = Math.cos(jupyterOrbitSpeed * frameCount) * jupyterDistance;
+      jupyter.position.z = Math.sin(jupyterOrbitSpeed * frameCount) * jupyterDistance;
+
+      saturnGroup.position.x = Math.cos(saturnRingOrbitSpeed * frameCount) * saturnRingDistance;
+      saturnGroup.position.z = Math.sin(saturnRingOrbitSpeed * frameCount) * saturnRingDistance;
+
+      uranus.position.x = Math.cos(uranusOrbitSpeed * frameCount) * uranusDistance;
+      uranus.position.z = Math.sin(uranusOrbitSpeed * frameCount) * uranusDistance;
+
+      neptune.position.x = Math.cos(neptuneOrbitSpeed * frameCount) * neptuneDistance;
+      neptune.position.z = Math.sin(neptuneOrbitSpeed * frameCount) * neptuneDistance;
 
       blink();
 
@@ -183,12 +281,15 @@ function ThreeScene() {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      isMounted = false;
       window.removeEventListener("resize", handleResize);
       document.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [props.propchange]);
 
-  return <div style={{ height: "100%", width: "100%" }} ref={refContainer}></div>;
+  return <div style={{ height: "100%", width: "100%" ,position:'fixed',top:0,left:0,zIndex:-1}} ref={refContainer}>
+
+  </div>;
 }
 
 export default ThreeScene;
